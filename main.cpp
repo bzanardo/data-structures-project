@@ -213,9 +213,23 @@ bool move_rook(Board b, int src_row, int src_col, int dest_row, int dest_col, in
                 return false;
             }
         }
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
     }
 
-    // Moving vertically backward (i.e row number incresing)
+    // Moving vertically backward (i.e row number increasing)
     if ( (src_col == dest_col) && (dest_row > src_row) ) {
         char p = b.get_piece(src_row + 1,src_col);
         if ( p != ' ') {
@@ -227,19 +241,80 @@ bool move_rook(Board b, int src_row, int src_col, int dest_row, int dest_col, in
                 return false;
             }
         }
-    }
 
-    if (player == 0) {    // White player.
-        if ( (d != ' ') && (islower(d) == 0) ) {
-            return false;       // Trying to capture a piece of the same color.
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
         }
     }
-    if (player == 1) {    // Black player.
-        if ( (d != ' ') && (isupper(d) == 0) ) {
-            return false;       // Trying to capture a piece of the same color.
+
+    // Moving horizontally, to the right (i.e col number increasing)
+    if ( (src_row == dest_row) && (dest_col > src_col) ) {
+        char p = b.get_piece(src_row, src_col + 1);
+        if ( p != ' ') {
+            return false;
+        }
+        for (int i = (src_col + 1); i < dest_col; i++) {
+            p = b.get_piece(src_row, i);
+            if (p != ' ') {     // Path is blocked by a piece.
+                return false;
+            }
+        }
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
         }
     }
 
-    return true;
+    // Moving horizontally, to the left (i.e col number decreasing)
+    if ( (src_row == dest_row) && (dest_col < src_col) ) { 
+        char p = b.get_piece(src_row, src_col - 1);
+        if ( p != ' ') {
+            return false;
+        }
+        for (int i = (src_col - 1); i > dest_col; i--) {
+            p = b.get_piece(src_row, i);
+            if (p != ' ') {     // Path is blocked by a piece.
+                return false;
+            }
+        }
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
 
+    return false;
 }
+
+
