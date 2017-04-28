@@ -46,6 +46,12 @@ Board::Board() {
     set_piece(7,5,'B');
     set_piece(7,6,'N');
     set_piece(7,7,'R');
+
+    kingW.first = 7;
+    kingW.second = 4;
+
+    kingB.first = 0;
+    kingB.second = 4;
 }
 
 char Board::get_piece(int row, int col) {return grid[row][col];}
@@ -78,7 +84,8 @@ void Board::print() {
     }
 }
 
-void Board::make_move(int src_row, int src_col, int dest_row, int dest_col) {
+void Board::make_move(string &turn) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = get_piece(src_row, src_col);
     set_piece(src_row, src_col, ' ');
     set_piece(dest_row, dest_col, c);
