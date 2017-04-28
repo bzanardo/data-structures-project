@@ -5,6 +5,9 @@
 #ifndef board_h
 #define board_h
 
+#include <utility>
+#include <string>
+
 class Board {
 public:
     // constructor
@@ -16,10 +19,12 @@ public:
     
     // other functions
     void print();
-    void make_move(int, int, int, int);
+    void make_move(string&);
     
 private:
     char** grid;
+    pair<int, int> kingW;
+    pair<int, int> kingB;
 };
 
 #endif

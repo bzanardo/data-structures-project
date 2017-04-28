@@ -8,11 +8,11 @@
 using namespace std;
 
 string get_turn(int);
-bool valid_move(Board, int, int, int, int, int);
-bool move_pawn(Board, int, int, int, int, int);
-bool move_knight(Board, int, int, int, int, int);
-bool move_rook(Board, int, int, int, int, int);
-bool move_bishop(Board, int, int, int, int, int);
+bool valid_move(Board, string&, int);
+bool move_pawn(Board, string&, int);
+bool move_knight(Board, string&, int);
+bool move_rook(Board, string&, int);
+bool move_bishop(Board, string&, int);
 
 int main() {
     Board new_game;
@@ -22,8 +22,8 @@ int main() {
     
     while (1) {
         turn = get_turn(player);
-        if (valid_move(new_game, turn[0]-'0', turn[1]-'0', turn[2]-'0', turn[3]-'0', player)) { 
-            new_game.make_move(turn[0]-'0', turn[1]-'0', turn[2]-'0', turn[3]-'0');
+        if (valid_move(new_game, turn, player)) { 
+            new_game.make_move(turn);
         } else {
             continue;
         }
@@ -51,7 +51,8 @@ string get_turn(int player) {
     return turn;
 }
 
-bool valid_move(Board b, int src_row, int src_col, int dest_row, int dest_col, int player) {
+bool valid_move(Board b, string &turn, int player) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = b.get_piece(src_row, src_col);
     player = player%2;
     if ( (src_row < 0) || (src_row > 7)) {
@@ -112,7 +113,8 @@ bool valid_move(Board b, int src_row, int src_col, int dest_row, int dest_col, i
     return true;
 }
 
-bool move_pawn(Board b, int src_row, int src_col, int dest_row, int dest_col, int player) {
+bool move_pawn(Board b, string &turn, int player) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
     if (player == 0) {      // White piece
@@ -156,7 +158,8 @@ bool move_pawn(Board b, int src_row, int src_col, int dest_row, int dest_col, in
     }
 }
 
-bool move_knight(Board b, int src_row, int src_col, int dest_row, int dest_col, int player) {
+bool move_knight(Board b, string &turn int player) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
     if (player == 0) {    // White player.
@@ -198,7 +201,8 @@ bool move_knight(Board b, int src_row, int src_col, int dest_row, int dest_col, 
     return false;
 }
 
-bool move_rook(Board b, int src_row, int src_col, int dest_row, int dest_col, int player) {
+bool move_rook(Board b, string &turn, int player) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
 
@@ -318,7 +322,8 @@ bool move_rook(Board b, int src_row, int src_col, int dest_row, int dest_col, in
     return false;
 }
 
-bool move_bishop(Board b, int src_row, int src_col, int dest_row, int dest_col, int player) {
+bool move_bishop(Board b, string &turn, int player) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
 
