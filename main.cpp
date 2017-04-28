@@ -11,6 +11,7 @@ string get_turn(int);
 bool valid_move(Board, int, int, int, int, int);
 bool move_pawn(Board, int, int, int, int, int);
 bool move_knight(Board, int, int, int, int, int);
+bool move_rook(Board, int, int, int, int, int);
 
 int main() {
     Board new_game;
@@ -98,6 +99,15 @@ bool valid_move(Board b, int src_row, int src_col, int dest_row, int dest_col, i
             return false;
         }
     }
+    if ( (c == 'r') || (c == 'R') ) {
+        if (move_rook(b, src_row, src_col, dest_row, dest_col, player)) {
+            return true;
+        } else {
+            cout << "Invalid move." << endl;
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -185,4 +195,19 @@ bool move_knight(Board b, int src_row, int src_col, int dest_row, int dest_col, 
     }
 
     return false;
+}
+
+bool move_rook(Board b, int src_row, int src_col, int dest_row, int dest_col, int player) {
+    char c = b.get_piece(src_row, src_col);       // Piece to be moved
+    char d = b.get_piece(dest_row, dest_col);
+    if (player == 0) {    // White player.
+        if ( (d != ' ') && (islower(d) == 0) ) {
+            return false;       // Trying to capture a piece of the same color.
+        }
+    }
+    if (player == 1) {    // Black player.
+        if ( (d != ' ') && (isupper(d) == 0) ) {
+            return false;       // Trying to capture a piece of the same color.
+        }
+    }
 }
