@@ -200,6 +200,35 @@ bool move_knight(Board b, int src_row, int src_col, int dest_row, int dest_col, 
 bool move_rook(Board b, int src_row, int src_col, int dest_row, int dest_col, int player) {
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
+
+    // Moving vertically forward (i.e row number decreasing)
+    if ( (src_col == dest_col) && (dest_row < src_row) ) { 
+        char p = b.get_piece(src_row - 1,src_col);
+        if ( p != ' ') {
+            return false;
+        }
+        for (int i = (src_row - 1); i > dest_row; i--) {
+            p = b.get_piece(i,src_col);
+            if (p != ' ') {     // Path is blocked by a piece.
+                return false;
+            }
+        }
+    }
+
+    // Moving vertically backward (i.e row number incresing)
+    if ( (src_col == dest_col) && (dest_row > src_row) ) {
+        char p = b.get_piece(src_row + 1,src_col);
+        if ( p != ' ') {
+            return false;
+        }
+        for (int i = (src_row + 1); i < dest_row; i++) {
+            p = b.get_piece(i,src_col);
+            if (p != ' ') {     // Path is blocked by a piece.
+                return false;
+            }
+        }
+    }
+
     if (player == 0) {    // White player.
         if ( (d != ' ') && (islower(d) == 0) ) {
             return false;       // Trying to capture a piece of the same color.
@@ -210,4 +239,7 @@ bool move_rook(Board b, int src_row, int src_col, int dest_row, int dest_col, in
             return false;       // Trying to capture a piece of the same color.
         }
     }
+
+    return true;
+
 }
