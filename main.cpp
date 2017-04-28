@@ -86,7 +86,7 @@ bool valid_move(Board b, string &turn, int player) {
     }
 
     if ( (c == 'p') || (c == 'P') ) {       // Pawn
-        if (move_pawn(b, src_row, src_col, dest_row, dest_col, player)) {
+        if (move_pawn(b, turn, player)) {
             return true;
         } else {
             cout << "Invalid move." << endl;
@@ -94,7 +94,7 @@ bool valid_move(Board b, string &turn, int player) {
         }
     }
     if ( (c == 'n') || (c == 'N') ) {
-        if (move_knight(b, src_row, src_col, dest_row, dest_col, player)) {
+        if (move_knight(b, turn, player)) {
             return true;
         } else {
             cout << "Invalid move." << endl;
@@ -102,7 +102,7 @@ bool valid_move(Board b, string &turn, int player) {
         }
     }
     if ( (c == 'r') || (c == 'R') ) {
-        if (move_rook(b, src_row, src_col, dest_row, dest_col, player)) {
+        if (move_rook(b, turn, player)) {
             return true;
         } else {
             cout << "Invalid move." << endl;
@@ -158,7 +158,7 @@ bool move_pawn(Board b, string &turn, int player) {
     }
 }
 
-bool move_knight(Board b, string &turn int player) {
+bool move_knight(Board b, string &turn, int player) {
     int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);

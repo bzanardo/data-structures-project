@@ -7,6 +7,7 @@
 
 #include <utility>
 #include <string>
+using namespace std;
 
 class Board {
 public:
