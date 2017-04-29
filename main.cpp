@@ -683,5 +683,147 @@ bool move_king(Board b, string &turn, int player) {
     int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
-    
+
+    if ( (src_row == dest_row) && (dest_col == src_col + 1) ) {   // Moving one square to the right
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+
+    if ( (src_row == dest_row) && (dest_col == src_col - 1) ) {   // Moving one square to the left
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+
+    if ( (dest_row == src_row + 1) && (dest_col == src_col) ) {   // Moving one square backwards
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+
+    if ( (dest_row == src_row - 1) && (dest_col == src_col) ) {     // Moving one square forward
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+
+    // Diagonals:
+
+    // Moving one square back, to the right diagonal
+    if ( (dest_row == src_row + 1) && (dest_col == src_col + 1) ) {
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+
+    // Moving one square back, to the left diagonal
+    if ( (dest_row == src_row + 1) && (dest_col == src_col - 1) ) {
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+
+    // Moving one square forward, to the right diagonal
+    if ( (dest_row == src_row - 1) && (dest_col == src_col + 1) ) {
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+
+    // Moving one square forward, to the left diagonal
+    if ( (dest_row == src_row - 1) && (dest_col == src_col - 1) ) {
+        if (player == 0) {    // White player.
+            if ( (d != ' ') && (islower(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else {
+                return true;
+            }   
+        }
+        if (player == 1) {    // Black player.
+            if ( (d != ' ') && (isupper(d) == 0) ) {
+                return false;       // Trying to capture a piece of the same color.
+            } else { 
+                return true;
+            }
+        }
+    }
+    return false;       
 }
