@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <cmath>
 #include "board.h"
 using namespace std;
 
@@ -13,6 +14,8 @@ bool move_pawn(Board, string&, int);
 bool move_knight(Board, string&, int);
 bool move_rook(Board, string&, int);
 bool move_bishop(Board, string&, int);
+bool move_queen(Board, string&, int);
+bool move_king(Board, string&, int);
 
 int main() {
     Board new_game;
@@ -109,7 +112,32 @@ bool valid_move(Board b, string &turn, int player) {
             return false;
         }
     }
+    if ( (c == 'b') || (c == 'B') ) {
+        if (move_bishop(b, turn, player)) {
+            return true;
+        } else {
+            cout << "Invalid move." << endl;
+            return false;
+        }
+    }
 
+    if ( (c == 'q') || (c == 'Q') ) {
+        if (move_queen(b, turn, player)) {
+            return true;
+        } else {
+            cout << "Invalid move." << endl;
+            return false;
+        }
+    }
+
+    if ( (c == 'k') || (c == 'K') ) {
+        if (move_king(b, turn, player)) {
+            return true;
+        } else {
+            cout << "Invalid move." << endl;
+            return false;
+        }
+    }
     return true;
 }
 
@@ -209,7 +237,7 @@ bool move_rook(Board b, string &turn, int player) {
     // Moving vertically forward (i.e row number decreasing)
     if ( (src_col == dest_col) && (dest_row < src_row) ) { 
         char p = b.get_piece(src_row - 1,src_col);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_row - 1); i > dest_row; i--) {
@@ -237,7 +265,7 @@ bool move_rook(Board b, string &turn, int player) {
     // Moving vertically backward (i.e row number increasing)
     if ( (src_col == dest_col) && (dest_row > src_row) ) {
         char p = b.get_piece(src_row + 1,src_col);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_row + 1); i < dest_row; i++) {
@@ -266,7 +294,7 @@ bool move_rook(Board b, string &turn, int player) {
     // Moving horizontally, to the right (i.e col number increasing)
     if ( (src_row == dest_row) && (dest_col > src_col) ) {
         char p = b.get_piece(src_row, src_col + 1);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_col + 1); i < dest_col; i++) {
@@ -294,7 +322,7 @@ bool move_rook(Board b, string &turn, int player) {
     // Moving horizontally, to the left (i.e col number decreasing)
     if ( (src_row == dest_row) && (dest_col < src_col) ) { 
         char p = b.get_piece(src_row, src_col - 1);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_col - 1); i > dest_col; i--) {
@@ -327,10 +355,118 @@ bool move_bishop(Board b, string &turn, int player) {
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
 
+    // Moving diagonally
+    if ( abs(src_row - dest_row) == abs(src_col - dest_col) ) {
+        int num = abs (src_row - dest_row);
+
+        // Moving down, to the right diagonal
+        if ( (dest_row - src_row > 0) && (dest_col - src_col > 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row + i, src_col + i); 
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }   
+            }
+        }
+
+        // Moving down, to the left diagonal
+        if ( (dest_row - src_row > 0) && (dest_col - src_col < 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row + i, src_col - i);
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }
+            }
+        }
+        
+        // Moving up, to the right diagonal
+        if ( (dest_row - src_row < 0) && (dest_col - src_col > 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row - i, src_col + i);
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }
+            }
+        }
+
+        // Moving up, to the left diagonal
+        if ( (dest_row - src_row < 0) && (dest_col - src_col < 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row - i, src_col - i);
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool move_queen(Board b, string &turn, int player) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
+    char c = b.get_piece(src_row, src_col);       // Piece to be moved
+    char d = b.get_piece(dest_row, dest_col);
+
     // Moving vertically forward (i.e row number decreasing)
     if ( (src_col == dest_col) && (dest_row < src_row) ) { 
         char p = b.get_piece(src_row - 1,src_col);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_row - 1); i > dest_row; i--) {
@@ -358,7 +494,7 @@ bool move_bishop(Board b, string &turn, int player) {
     // Moving vertically backward (i.e row number increasing)
     if ( (src_col == dest_col) && (dest_row > src_row) ) {
         char p = b.get_piece(src_row + 1,src_col);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_row + 1); i < dest_row; i++) {
@@ -387,7 +523,7 @@ bool move_bishop(Board b, string &turn, int player) {
     // Moving horizontally, to the right (i.e col number increasing)
     if ( (src_row == dest_row) && (dest_col > src_col) ) {
         char p = b.get_piece(src_row, src_col + 1);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_col + 1); i < dest_col; i++) {
@@ -415,7 +551,7 @@ bool move_bishop(Board b, string &turn, int player) {
     // Moving horizontally, to the left (i.e col number decreasing)
     if ( (src_row == dest_row) && (dest_col < src_col) ) { 
         char p = b.get_piece(src_row, src_col - 1);
-        if ( p != ' ') {
+        if ( (p != ' ') && (p != d) ) {
             return false;
         }
         for (int i = (src_col - 1); i > dest_col; i--) {
@@ -441,6 +577,111 @@ bool move_bishop(Board b, string &turn, int player) {
     }
 
     // Moving diagonally
+    if ( abs(src_row - dest_row) == abs(src_col - dest_col) ) {
+        int num = abs (src_row - dest_row);
 
+        // Moving down, to the right diagonal
+        if ( (dest_row - src_row > 0) && (dest_col - src_col > 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row + i, src_col + i); 
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }   
+            }
+        }
+
+        // Moving down, to the left diagonal
+        if ( (dest_row - src_row > 0) && (dest_col - src_col < 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row + i, src_col - i);
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }
+            }
+        }
+        
+        // Moving up, to the right diagonal
+        if ( (dest_row - src_row < 0) && (dest_col - src_col > 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row - i, src_col + i);
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }
+            }
+        }
+
+        // Moving up, to the left diagonal
+        if ( (dest_row - src_row < 0) && (dest_col - src_col < 0) ) {
+            for (int i = 1; i < num; i++) {
+                char p = b.get_piece(src_row - i, src_col - i);
+                if (p != ' ') {
+                    return false;   // Path is blocked by a piece.
+                }
+            }
+            if (player == 0) {    // White player.
+                if ( (d != ' ') && (islower(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else {
+                    return true;
+                }   
+            }
+            if (player == 1) {    // Black player.
+                if ( (d != ' ') && (isupper(d) == 0) ) {
+                    return false;       // Trying to capture a piece of the same color.
+                } else { 
+                    return true;
+                }
+            }
+        }
+    }
     return false;
+}
+
+bool move_king(Board b, string &turn, int player) {
+    int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
+    char c = b.get_piece(src_row, src_col);       // Piece to be moved
+    char d = b.get_piece(dest_row, dest_col);
+    
 }
