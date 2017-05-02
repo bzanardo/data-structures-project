@@ -56,9 +56,8 @@ string get_turn(int player) {
 
 bool valid_move(Board b, string &turn, int player) {
     int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
-    char c = b.get_piece(src_row, src_col);
     player = player%2;
-    if ( (src_row < 0) || (src_row > 7)) {
+    if ( (src_row < 0) || (src_col > 7) ) {
         cout << "Out of range." << endl;
         return false;
     }
@@ -74,6 +73,8 @@ bool valid_move(Board b, string &turn, int player) {
         cout << "Out of range." << endl;
         return false;
     }
+
+    char c = b.get_piece(src_row, src_col);
 
     if (player == 0) {       // White player
         if (isupper(c) == 0) {
