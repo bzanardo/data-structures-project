@@ -15,6 +15,9 @@ bool move_pawn(Board b, string &turn, int player) {
     char c = b.get_piece(src_row, src_col);       // Piece to be moved
     char d = b.get_piece(dest_row, dest_col);
     if (player == 0) {      // White piece
+	if ( (dest_row == src_row - 2) && (src_col == dest_col) ) {	// Moving two squares on first move
+		return (src_row == 6);
+	}
         if ((dest_row == src_row - 1) && (src_col == dest_col)) {     // Moving one square forward
             if (d != ' ') {
                 return false;
@@ -33,7 +36,10 @@ bool move_pawn(Board b, string &turn, int player) {
             }
         }
     }
-    if (player == 1) {
+    if (player == 1) {	// Black piece
+	if ( (dest_row == src_row + 2) && (src_col == dest_col) ) {	// Moving two squares on first move
+		return (src_row == 1);
+	}
         if ((dest_row == src_row + 1) && (src_col == dest_col)) {     // Moving one square forward
             if (d != ' ') {
                 return false;

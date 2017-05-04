@@ -86,7 +86,20 @@ void Board::print() {
 
 void Board::make_move(string &turn) {
     int src_row = turn[0]-'0', src_col = turn[1]-'0', dest_row = turn[2]-'0', dest_col = turn[3]-'0';
-    char c = get_piece(src_row, src_col);
+    char c = get_piece(src_row, src_col); 
+
+    // update king position if char is a king
+    if (c == 'K' || c == 'k') {
+	if (c == 'k') {
+		kingB.first = dest_row;
+		kingB.second = dest_col;
+	} else {
+		kingW.first = dest_row;
+		kingW.second = dest_col;
+	}
+    }
+
+    // make the move
     set_piece(src_row, src_col, ' ');
     set_piece(dest_row, dest_col, c);
 }

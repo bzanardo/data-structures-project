@@ -5,8 +5,10 @@
 #include <string>
 #include <cctype>
 #include <cmath>
+#include <cstdlib>
 #include "board.h"
 #include "movement.h"
+#include "promotion.h"
 using namespace std;
 
 string get_turn(int);
@@ -17,11 +19,24 @@ int main() {
     new_game.print();
     int player = 0;
     string turn;
+    char piece;
     
     while (1) {
         turn = get_turn(player);
-        if (valid_move(new_game, turn, player)) { 
+        if (valid_move(new_game, turn, player)) {
+	    if (can_promote(new_game, turn, player)) {
+		cout << "\nPawn promtion available. What piece would you like to add? ";
+		cin >> piece;
+		// ensure correct case for new piece
+		if (player%2 == 0)
+			piece = toupper(piece);	
+		else
+			piece = tolower(piece);
+
+		make_promotion(new_game, turn, piece);
+	    }
             new_game.make_move(turn);
+	    system("clear");
         } else {
             continue;
         }
