@@ -6,16 +6,11 @@
 #include <cctype>
 #include <cmath>
 #include "board.h"
+#include "movement.h"
 using namespace std;
 
 string get_turn(int);
 bool valid_move(Board, string&, int);
-bool move_pawn(Board, string&, int);
-bool move_knight(Board, string&, int);
-bool move_rook(Board, string&, int);
-bool move_bishop(Board, string&, int);
-bool move_queen(Board, string&, int);
-bool move_king(Board, string&, int);
 
 int main() {
     Board new_game;
